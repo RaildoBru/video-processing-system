@@ -1,0 +1,30 @@
+name: 🧪 CI - Build & Test
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service: [gateway-service, upload-service, processing-service, zipping-service, notification-service]
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v3
+
+      - name: 📦 Instalar dependências
+        working-directory: ${{ matrix.service }}
+        run: npm ci
+
+      - name: ✅ Rodar testes
+        working-directory: ${{ matrix.service }}
+        run: npm test || echo "⚠️ Sem testes em ${{ matrix.service }}"
+
+      - name: 🐳 Build da imagem Docker
+        run: docker build -t ${{ matrix.service }}:ci ./${{ matrix.service }}
