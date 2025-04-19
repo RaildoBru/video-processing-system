@@ -33,9 +33,9 @@ async function start() {
         const zipPath = path.join(ZIP_DIR, `${filename}.zip`);
         const output = fs.createWriteStream(zipPath);
         const archive = archiver('zip', { zlib: { level: 9 } });
-
+        let outputDirs;
         archive.pipe(output);
-        archive.directory(outputDir, false);
+        archive.directory(outputDirs, false);
 
         output.on('close', () => {
           console.log(`✅ ZIP criado: ${zipPath} (${archive.pointer()} bytes)`);
