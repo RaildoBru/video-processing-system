@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"     # porta de comunicação AMQP
+      - "15672:15672"   # interface de administração
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - video-net
+
+  auth-service:
+    build: ./services/auth-service
+    ports:
+      - "3001:3001"
+    networks:
+      - video-net
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq:5672
+
+  upload-service:
+    build: ./services/upload-service
+    volumes:
+      - ./services/upload-service/uploads:/app/uploads
+    ports:
+      - "3002:3002"
+    depends_on:
+      - rabbitmq
+    networks:
+      - video-net
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq:5672
+
+  processing-service:
+    build: ./services/processing-service
+    volumes:
+      - ./services/processing-service/frames:/app/frames
+      - ./services/upload-service/uploads:/app/uploads
+    depends_on:
+      - rabbitmq
+    networks:
+      - video-net
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq:5672
+
+  zipping-service:
+    build: ./services/zipping-service
+    volumes:
+      - ./services/processing-service/frames:/app/frames
+      - ./services/zipping-service/zips:/app/zips
+    depends_on:
+      - rabbitmq
+    networks:
+      - video-net
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq:5672
+
+  notification-service:
+    build: ./services/notification-service
+    depends_on:
+      - rabbitmq
+    networks:
+      - video-net
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq:5672
+      EMAIL_USER: MS_ETTMGq@test-zxk54v88mqqljy6v.mlsender.net
+      EMAIL_PASS: mssp.3QEs2mB.pq3enl60d28l2vwr.A5F4RGt
+      EMAIL_HOST: smtp.mailersend.net
+      EMAIL_PORT: 587
+
+  gateway-service:
+    build: ./services/gateway-service
+    volumes:
+      - ./services/zipping-service/zips:/app/zips
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - upload-service
+    networks:
+      - video-net
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq:5672
+
+networks:
+  video-net:
+    driver: bridge
