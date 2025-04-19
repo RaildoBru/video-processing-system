@@ -67,10 +67,10 @@ services:
       - video-net
     environment:
       RABBITMQ_URL: amqp://rabbitmq:5672
-      EMAIL_USER: MS_ETTMGq@test-zxk54v88mqqljy6v.mlsender.net
-      EMAIL_PASS: mssp.3QEs2mB.pq3enl60d28l2vwr.A5F4RGt
-      EMAIL_HOST: smtp.mailersend.net
-      EMAIL_PORT: 587
+      EMAIL_USER: ${{ secrets.EMAIL_USER }}
+      EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+      EMAIL_HOST: ${{ var.EMAIL_HOST }}
+      EMAIL_PORT: ${{ var.PORT }}
 
   gateway-service:
     build: ./services/gateway-service
