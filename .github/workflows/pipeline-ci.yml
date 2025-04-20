@@ -2,7 +2,7 @@ name: 🧪 CI - Build & Test
 
 on:
   pull_request:
-    branches: [master]
+    branches: [develop]
   push:
     branches: [master]
 
