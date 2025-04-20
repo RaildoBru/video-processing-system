@@ -1,4 +1,3 @@
-// upload-service logic here
 const express = require('express');
 const amqp = require('amqplib');
 const multer = require('multer');
@@ -10,6 +9,10 @@ const upload = multer({ dest: 'uploads/' });
 const RABBITMQ_URL = process.env.RABBITMQ_URL || 'amqp://rabbitmq:5672';
 
 let channel = null;
+
+function setChannel(mockedChannel) {
+  channel = mockedChannel;
+}
 
 async function connectRabbitMQ() {
   try {
@@ -26,11 +29,11 @@ async function connectRabbitMQ() {
 
 app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
-  });
+});
   
-  app.get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.send('Upload Service está no ar 🚀');
-  });
+});
   
 
 app.post('/upload', upload.single('video'), async (req, res) => {
@@ -44,9 +47,9 @@ app.post('/upload', upload.single('video'), async (req, res) => {
 
   try {
     await channel.sendToQueue('video_upload', Buffer.from(JSON.stringify({ filename, path })));
-    res.json({ message: 'Enviado com sucesso', filename  });
+    res.status(200).json({ message: 'Enviado com sucesso', filename  });
   } catch (err) {
-    console.log('simulando envio de email pra erro!');
+    console.error(`Erro ao enviar para a fila: ${err.message}`);
     /*channel.sendToQueue('video_error', Buffer.from(JSON.stringify({
       email: 'raildobruno@gmail.com', // pode vir junto do request original
       filename,
@@ -56,8 +59,4 @@ app.post('/upload', upload.single('video'), async (req, res) => {
   }
 });
 
-connectRabbitMQ().then(() => {
-  app.listen(3002, () => {
-    console.log('🚀 Upload Service rodando na porta 3002');
-  });
-});
+module.exports = { app, connectRabbitMQ, setChannel };
