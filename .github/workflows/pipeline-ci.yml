@@ -16,7 +16,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./${{ matrix.service }}
+        working-directory:  ./services/${{ matrix.service }}
 
     steps:
       - name: 📥 Checkout do código
