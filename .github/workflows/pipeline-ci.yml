@@ -34,7 +34,7 @@ jobs:
         run: npm test || echo "⚠️ Sem testes em ${{ matrix.service }}"
 
       - name: 🐳 Build da imagem Docker
-        run: docker build -t ${{ matrix.service }}:ci ./${{ matrix.service }}
+        run: docker build -t ${{ matrix.service }}:ci ./services/${{ matrix.service }}
 
       - name: ✅ CI concluído para ${{ matrix.service }}
         run: echo "✅ Serviço ${{ matrix.service }} passou pela pipeline"  
