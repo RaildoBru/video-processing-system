@@ -67,11 +67,11 @@ services:
       - video-net
     environment:
       RABBITMQ_URL: amqp://rabbitmq:5672
-      EMAIL_USER: ${{ secrets.EMAIL_USER }}
-      EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-      EMAIL_HOST: ${{ var.EMAIL_HOST }}
-      EMAIL_PORT: ${{ var.PORT }}
-
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
+      EMAIL_HOST: ${EMAIL_HOST}
+      EMAIL_PORT: ${EMAIL_PORT}
+    command: sh -c "echo EMAIL_HOST:$EMAIL_HOST"
   gateway-service:
     build: ./services/gateway-service
     volumes:
