@@ -40,10 +40,9 @@ jobs:
         working-directory: ./services/${{ matrix.service }}
         continue-on-error: true
       
-
       - name: 🧾 Upload da cobertura de testes
         if: success() || failure()  # sempre tenta subir
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact
         with:
           name: coverage-${{ matrix.service }}
           path: ./services/${{ matrix.service }}/coverage
