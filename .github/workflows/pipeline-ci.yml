@@ -22,6 +22,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
+      
+      - name: ♻️ Cache de dependências
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('services/${{ matrix.service }}/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: 📦 Instalar dependências
         run: npm install
@@ -31,13 +39,14 @@ jobs:
         run: npm test --coverage || echo "⚠️ Sem testes em ${{ matrix.service }}"
         working-directory: ./services/${{ matrix.service }}
         continue-on-error: true
+      
 
-      - name: 🧾 Upload da cobertura de testes
-        if: success() || failure()  # sempre tenta subir
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-${{ matrix.service }}
-          path: ./services/${{ matrix.service }}/coverage
+      #- name: 🧾 Upload da cobertura de testes
+      #  if: success() || failure()  # sempre tenta subir
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: coverage-${{ matrix.service }}
+      #    path: ./services/${{ matrix.service }}/coverage
 
       - name: 🐳 Build da imagem Docker
         run: docker build -t ${{ matrix.service }}:ci ./services/${{ matrix.service }}
