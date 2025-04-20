@@ -14,27 +14,25 @@ jobs:
       matrix:
         service: [gateway-service, upload-service, processing-service, zipping-service, notification-service]
 
-    defaults:
-      run:
-        working-directory:  ./services/${{ matrix.service }}
-
     steps:
       - name: 📥 Checkout do código
         uses: actions/checkout@v3
-      
+
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20  
+          node-version: 20
 
       - name: 📦 Instalar dependências
         run: npm install
+        working-directory: ./services/${{ matrix.service }}
 
       - name: ✅ Rodar testes
         run: npm test || echo "⚠️ Sem testes em ${{ matrix.service }}"
+        working-directory: ./services/${{ matrix.service }}
 
       - name: 🐳 Build da imagem Docker
         run: docker build -t ${{ matrix.service }}:ci ./services/${{ matrix.service }}
 
       - name: ✅ CI concluído para ${{ matrix.service }}
-        run: echo "✅ Serviço ${{ matrix.service }} passou pela pipeline"  
+        run: echo "✅ Serviço ${{ matrix.service }} passou pela pipeline"
