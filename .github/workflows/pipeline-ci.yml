@@ -18,8 +18,8 @@ jobs:
       - name: Mostrar valor de EMAIL_HOST vindo de vars
         run: echo "EMAIL_HOST:$EMAIL_HOST"
         env:
-          EMAIL_HOST: ${{vars.EMAIL_HOST}}
-        
+          EMAIL_HOST: ${{ vars.EMAIL_HOST }}
+
       - name: 📥 Checkout do código
         uses: actions/checkout@v3
 
