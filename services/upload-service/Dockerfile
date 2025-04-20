@@ -5,4 +5,4 @@ RUN npm install
 COPY . .
 RUN mkdir -p uploads
 EXPOSE 3002
-CMD ["node", "app.js"]
+CMD ["node", "index.js"]

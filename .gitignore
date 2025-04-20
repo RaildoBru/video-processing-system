@@ -4,5 +4,7 @@
 # Node modules
 node_modules/
 
-frames/*
+frames/
 coverage/
+zips/
+uploads/

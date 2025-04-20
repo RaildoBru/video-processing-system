@@ -15,6 +15,11 @@ jobs:
         service: [gateway-service, upload-service, processing-service, zipping-service, notification-service]
 
     steps:
+      - name: Mostrar valor de EMAIL_HOST vindo de vars
+        run: echo "EMAIL_HOST:$EMAIL_HOST"
+        env:
+          EMAIL_HOST: ${{vars.EMAIL_HOST}}
+        
       - name: 📥 Checkout do código
         uses: actions/checkout@v3
 
@@ -36,7 +41,7 @@ jobs:
         working-directory: ./services/${{ matrix.service }}
 
       - name: ✅ Rodar testes
-        run: npm test --coverage || echo "⚠️ Sem testes em ${{ matrix.service }}"
+        run: npm test || echo "⚠️ Sem testes em ${{ matrix.service }}"
         working-directory: ./services/${{ matrix.service }}
         continue-on-error: true
       
