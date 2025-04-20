@@ -42,7 +42,7 @@ jobs:
       
       - name: 🧾 Upload da cobertura de testes
         if: success() || failure()  # sempre tenta subir
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-${{ matrix.service }}
           path: ./services/${{ matrix.service }}/coverage
