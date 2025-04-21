@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -71,7 +69,7 @@ services:
       EMAIL_PASS: ${EMAIL_PASS}
       EMAIL_HOST: ${EMAIL_HOST}
       EMAIL_PORT: ${EMAIL_PORT}
-    command: sh -c "echo EMAIL_HOST:$EMAIL_HOST"
+
   gateway-service:
     build: ./services/gateway-service
     volumes:

@@ -1,4 +1,3 @@
-// auth-service logic here
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -17,11 +16,6 @@ app.post('/register', async (req, res) => {
   res.status(201).json({ message: "Registrado" });
 });
 
-
-app.get('/teste', async (req, res) => {
-    res.status(200).json({ message: "Teste" });
-});
-
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const user = users.find(u => u.username === username);
@@ -30,4 +24,4 @@ app.post('/login', async (req, res) => {
   res.json({ token });
 });
 
-app.listen(3001, () => console.log('Auth na 3001'));
+module.exports = { app, users };

@@ -47,9 +47,12 @@ async function sendEmail(to, filename, errorMessage) {
       <p>Por favor, tente novamente mais tarde.</p>
     `
   };
-  
+
   await transporter.sendMail(mailOptions);
   console.log(`📧 Email enviado para ${to}`);
 }
 
-connectRabbitMQ();
+module.exports = {
+  sendEmail,
+  connectRabbitMQ
+};

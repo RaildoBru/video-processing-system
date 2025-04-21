@@ -1,4 +1,3 @@
-// gateway-service logic here
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const jwt = require('jsonwebtoken');
@@ -31,4 +30,4 @@ app.get('/download/:filename', (req, res) => {
   });
 });
 
-app.listen(3000, () => console.log('Gateway na 3000'));
+module.exports = app;
