@@ -19,6 +19,7 @@ services:
       - video-net
     environment:
       RABBITMQ_URL: amqp://rabbitmq:5672
+      DATABASE_URL: ${DATABASE_URL}
 
   upload-service:
     build: ./services/upload-service
