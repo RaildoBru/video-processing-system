@@ -4,4 +4,4 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN mkdir -p zips
-CMD ["node", "app.js"]
+CMD ["node", "index.js"]

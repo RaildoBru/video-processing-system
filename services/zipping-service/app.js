@@ -47,7 +47,7 @@ async function start() {
           await sendError(channel, filename, email, err.message);
           channel.ack(msg); // não fica tentando para sempre
         });
-
+        console.log('Pronto para download');
         await archive.finalize();
 
       } catch (error) {
@@ -79,4 +79,4 @@ async function sendError(channel, filename, email, message) {
   }
 }
 
-start();
+module.exports = { start, sendError };
