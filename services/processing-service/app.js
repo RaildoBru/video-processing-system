@@ -29,6 +29,7 @@ function startProcessing() {
     const data = JSON.parse(msg.content.toString());
     const { filename, path: filepath, email } = data;
 
+    console.log(email);
     console.log(`📦 Processando vídeo: ${filename} em ${filepath}`);
 
     try {
@@ -36,7 +37,7 @@ function startProcessing() {
 
       channel.sendToQueue(
         'video_processed',
-        Buffer.from(JSON.stringify({ filename, outputDir }))
+        Buffer.from(JSON.stringify({ email: email, filename, outputDir }))
       );
 
       console.log(`📤 Enviado para fila "video_processed"`);
@@ -47,7 +48,7 @@ function startProcessing() {
 
       try {
         channel.sendToQueue('video_error', Buffer.from(JSON.stringify({
-          email: email || 'raildobruno@gmail.com', // fallback
+          email: email,
           filename,
           error: error.message
         })));

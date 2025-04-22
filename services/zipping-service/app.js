@@ -69,7 +69,7 @@ async function sendError(channel, filename, email, message) {
   try {
     const payload = {
       filename,
-      email: email || 'raildobruno@gmail.com',
+      email: email,
       error: message
     };
     channel.sendToQueue('video_error', Buffer.from(JSON.stringify(payload)));
