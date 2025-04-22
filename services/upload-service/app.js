@@ -34,10 +34,15 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
     res.send('Upload Service está no ar 🚀');
 });
-  
 
 app.post('/upload', upload.single('video'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Arquivo não enviado' });
+
+  const user = {
+    id: req.headers['x-user-id'],
+    username: req.headers['x-user-username'],
+    email: req.headers['x-user-email']
+  };
 
   const { filename, path } = req.file;
 
@@ -46,15 +51,15 @@ app.post('/upload', upload.single('video'), async (req, res) => {
   }
 
   try {
-    await channel.sendToQueue('video_upload', Buffer.from(JSON.stringify({ filename, path })));
+    await channel.sendToQueue('video_upload', Buffer.from(JSON.stringify( { email: user.email,filename, path })));
     res.status(200).json({ message: 'Enviado com sucesso', filename  });
   } catch (err) {
     console.error(`Erro ao enviar para a fila: ${err.message}`);
-    /*channel.sendToQueue('video_error', Buffer.from(JSON.stringify({
-      email: 'raildobruno@gmail.com', // pode vir junto do request original
+    channel.sendToQueue('video_error', Buffer.from(JSON.stringify({
+      email: user.email,
       filename,
       error: err.message
-    })));*/
+    })));
     res.status(500).json({ error: 'Erro ao enviar para a fila' });
   }
 });
