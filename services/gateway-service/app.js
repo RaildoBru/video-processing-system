@@ -23,7 +23,19 @@ app.get('/validate', auth, (req, res) => {
   });
 });
 
-app.use('/upload', auth, createProxyMiddleware({ target: 'http://upload-service:3002', changeOrigin: true }));
+app.use('/upload', auth, createProxyMiddleware({ 
+  target: 'http://upload-service:3002',
+  changeOrigin: true,
+  onProxyReq: (proxyReq, req) => {
+    if (req.user) {
+      proxyReq.setHeader('x-user-id', req.user.id);
+      proxyReq.setHeader('x-user-username', req.user.username);
+      proxyReq.setHeader('x-user-email', req.user.email);
+    }
+  }
+
+}));
+
 const zipPath = path.join(__dirname, 'zips');
 
 app.get('/download/:filename', (req, res) => {
