@@ -22,6 +22,7 @@ jobs:
 
       - name: 📥 Checkout do código
         uses: actions/checkout@v3
+      - uses: ArtiomTr/jest-coverage-report-action@v2
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
