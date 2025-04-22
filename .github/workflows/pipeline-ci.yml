@@ -44,11 +44,6 @@ jobs:
         run: npm test || echo "⚠️ Sem testes em ${{ matrix.service }}"
         working-directory: ./services/${{ matrix.service }}
         continue-on-error: true
-
-      - name: Jest coverage report
-        uses: ArtiomTr/jest-coverage-report-action@v2
-        with:
-          github-token: ${{ secrets.TOKEN_GIT }}  
       
       - name: 🧾 Upload da cobertura de testes
         if: success() || failure()  # sempre tenta subir
