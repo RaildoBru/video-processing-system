@@ -45,7 +45,7 @@ video-processing-system/ │ ├── services/ │ ├── auth-service/ │
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/video-processing-system.git
+   git clone git@github.com:RaildoBru/video-processing-system.git
    cd video-processing-system
    ```
 
@@ -62,6 +62,14 @@ video-processing-system/ │ ├── services/ │ ├── auth-service/ │
 4. Acesse os serviços:
    - Gateway: [http://localhost:3000](http://localhost:3000)
    - RabbitMQ: [http://localhost:15672](http://localhost:15672) (usuário/pwd: guest)
+
+📄 Documentação da API (Swagger)
+Acesse:
+
+```http
+http://localhost:3000/api-docs
+
+```
 
 ## ✅ Testes
 
