@@ -36,3 +36,10 @@ jobs:
             docker build -t ${{ secrets.DOCKER_USERNAME }}/$service:latest ./services/$service
             docker push ${{ secrets.DOCKER_USERNAME }}/$service:latest
           done
+      - id: deploy
+        name: deploy aws
+        uses: bitovi/github-actions-deploy-docker-to-ec2@v1.0.0 #Action para realizar o deploy de contêineres Docker em instâncias EC2.
+        with:
+          checkout: false
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }} # Define a chave de acesso da AWS para autenticação, armazenada nos secrets do repositório.
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} #Define a chave secreta de acesso da AWS para autenticação, armazenada nos secrets do repositório.
