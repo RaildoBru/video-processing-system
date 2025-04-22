@@ -4,16 +4,24 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const app = express();
+const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 const auth = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.sendStatus(401);
-  jwt.verify(token, 'secret', (err, user) => {
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
   });
 };
+
+app.get('/validate', auth, (req, res) => {
+  res.json({
+    message: 'Token válido',
+    user: req.user
+  });
+});
 
 app.use('/upload', auth, createProxyMiddleware({ target: 'http://upload-service:3002', changeOrigin: true }));
 const zipPath = path.join(__dirname, 'zips');
