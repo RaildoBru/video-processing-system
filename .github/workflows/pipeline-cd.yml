@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: 📥 Checkout do código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       
       - name: Debug secrets
         run: |
@@ -18,7 +18,7 @@ jobs:
           if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then echo "DOCKER_PASSWORD está vazio ou não definido"; fi
 
       - name: 🔐 Login no DockerHub
-        uses: docker/login-action@v4
+        uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
