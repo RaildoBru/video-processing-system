@@ -13,6 +13,7 @@ services:
 
   auth-service:
     build: ./services/auth-service
+    image: raildosantos/gateway-service:latest
     ports:
       - "3001:3001"
     networks:
@@ -23,6 +24,7 @@ services:
 
   upload-service:
     build: ./services/upload-service
+    image: raildosantos/upload-service:latest
     volumes:
       - ./services/upload-service/uploads:/app/uploads
     ports:
@@ -36,6 +38,7 @@ services:
 
   processing-service:
     build: ./services/processing-service
+    image: raildosantos/processing-service:latest
     volumes:
       - ./services/processing-service/frames:/app/frames
       - ./services/upload-service/uploads:/app/uploads
@@ -48,6 +51,7 @@ services:
 
   zipping-service:
     build: ./services/zipping-service
+    image: raildosantos/zipping-service:latest
     volumes:
       - ./services/processing-service/frames:/app/frames
       - ./services/zipping-service/zips:/app/zips
@@ -60,6 +64,7 @@ services:
 
   notification-service:
     build: ./services/notification-service
+    image:  raildosantos/notification-service:latest
     depends_on:
       - rabbitmq
     networks:
@@ -73,6 +78,7 @@ services:
 
   gateway-service:
     build: ./services/gateway-service
+    image: raildosantos/gateway-service:latest
     volumes:
       - ./services/zipping-service/zips:/app/zips
     ports:
