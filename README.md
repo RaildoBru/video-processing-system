@@ -22,12 +22,6 @@ Sistema de processamento de vídeos em microsserviços com upload, autenticaçã
 - `zipping-service` - Gera arquivos .zip com as imagens
 - `notification-service` - Envia e-mails em caso de erro
 
-## 📁 Estrutura do Projeto
-
-video-processing-system/ │ ├── services/ │ ├── auth-service/ │ ├── gateway-service/ │ ├── upload-service/ │ ├── processing-service/ │ ├── zipping-service/ │ └── notification-service/ │ ├── docker-compose.yml ├── README.md └── .env (opcional)
-
----
-
 
 ## 🔧 Pré-requisitos
 
