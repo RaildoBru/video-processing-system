@@ -7,7 +7,7 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-
+    environment: processing-video
     steps:
       - name: 📥 Checkout do código
         uses: actions/checkout@v3
@@ -30,3 +30,4 @@ jobs:
             docker build -t ${{ secrets.DOCKER_USERNAME }}/$service:latest ./services/$service
             docker push ${{ secrets.DOCKER_USERNAME }}/$service:latest
           done
+          echo "EMAIL_PORT=${{ vars.EMAIL_PORT }}" >> .env
