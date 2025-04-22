@@ -2,9 +2,14 @@ const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./docs/swagger.yaml');
 
 const app = express();
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const auth = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];

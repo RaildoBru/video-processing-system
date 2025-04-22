@@ -1,0 +1,190 @@
+openapi: 3.0.0
+info:
+  title: Video Processing System
+  description: API do sistema de processamento de vídeos
+  version: "1.0.0"
+servers:
+  - url: http://localhost:3000
+    description: Gateway Service
+
+paths:
+  /register:
+    post:
+      summary: Registra um novo usuário
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: Usuário registrado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usuário registrado com sucesso
+        "400":
+          description: Dados inválidos
+        "409" :
+          description: Email ou username já existente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email ou username já existente
+
+  /login:
+    post:
+      summary: Realiza login
+      description: Realiza login com `username` **ou** `email`, junto com a senha.
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                username:
+                  type: string
+                  description: Username do usuário (opcional se email for informado)
+                  example: testuser
+                email:
+                  type: string
+                  format: email
+                  description: Email do usuário (opcional se username for informado)
+                  example: email@exemplo.com
+                password:
+                  type: string
+                  description: Senha do usuário
+                  example: minhasenha123
+              oneOf:
+                - required: [username]
+                - required: [email]
+      responses:
+        "200":
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: >
+                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...O-9XVYt7TU
+        "401":
+          description: Credenciais inválidas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Credenciais inválidas
+
+  /validate:
+    get:
+      summary: Valida o token JWT
+      tags: [Gateway]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Token válido
+        "401":
+          description: Token ausente ou inválido
+
+  /upload:
+    post:
+      summary: Envia vídeo para processamento
+      tags: [Gateway]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                video:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Enviado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Enviado com sucesso
+                  filename:
+                    type: string
+                    example: 9a8cce97a59d4c191d1b9ab30b25cbd1
+        "400":
+          description: Erro no envio do arquivo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Arquivo não enviado
+
+  /download/{filename}:
+    get:
+      summary: Baixar arquivo processado
+      description: Retorna um arquivo `.zip` com os frames processados do vídeo identificado por `filename`.
+      tags:
+        - Gateway
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          schema:
+            type: string
+          description: Nome base do arquivo sem a extensão `.zip`
+          example: 78ebd68e6f1f045b8342c00155df5513
+      responses:
+        '200':
+          description: Arquivo ZIP retornado com sucesso
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Arquivo não encontrado
+        '500':
+          description: Erro ao baixar o arquivo
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
