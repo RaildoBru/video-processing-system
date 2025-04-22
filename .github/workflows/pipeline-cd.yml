@@ -30,11 +30,9 @@ jobs:
           echo "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" >> .env
           echo "EMAIL_HOST=${{ vars.EMAIL_HOST }}" >> .env
           echo "EMAIL_PORT=${{ vars.EMAIL_PORT }}" >> .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+
           services=(auth-service gateway-service upload-service processing-service zipping-service notification-service)
           for service in "${services[@]}"; do
             docker build -t ${{ secrets.DOCKER_USERNAME }}/$service:latest ./services/$service
             docker push ${{ secrets.DOCKER_USERNAME }}/$service:latest
           done
-          echo "EMAIL_PORT=${{ vars.EMAIL_PORT }}" >> .env
-          echo '${{ vars.EMAIL_PORT }}'
