@@ -11,7 +11,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 router.post('/register', async (req, res) => {
   const { email, username, password } = req.body;
-
   try {
 
     const existingEmail = await User.findOne({ email });

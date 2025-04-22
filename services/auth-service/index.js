@@ -9,8 +9,7 @@ app.use(express.json());
 // Conectar ao banco
 connectDB();
 
-// Usar rotas de auth
 app.use(router);
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`🚀 Auth service rodando na porta ${PORT}`));
+module.exports = app;
+

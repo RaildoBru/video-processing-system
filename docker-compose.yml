@@ -13,7 +13,7 @@ services:
 
   auth-service:
     build: ./services/auth-service
-    image: raildosantos/gateway-service:latest
+    image: raildosantos/auth-service:latest
     ports:
       - "3001:3001"
     networks:
