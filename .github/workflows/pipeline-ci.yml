@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        service: [gateway-service, upload-service, processing-service, zipping-service, notification-service]
+        service: [auth-service ,gateway-service, upload-service, processing-service, zipping-service, notification-service]
 
     steps:
       - name: Mostrar valor de EMAIL_HOST vindo de vars
