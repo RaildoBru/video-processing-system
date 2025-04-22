@@ -41,25 +41,23 @@ video-processing-system/ │ ├── services/ │ ├── auth-service/ │
 
 ## 📦 Executando localmente com Docker
 
-1. **Clone o projeto:**
-
-1. Clone o repositório:
+1. **Clone o repositório::**
    ```bash
    git clone git@github.com:RaildoBru/video-processing-system.git
    cd video-processing-system
    ```
 
-2. Copie o `.env.example` para `.env` e configure as variáveis:
+2. **Copie o `.env.example` para `.env` e configure as variáveis:**
    ```bash
    cp .env.example .env
    ```
 
-3. Suba os containers com Docker Compose:
+3. **Suba os containers com Docker Compose:**
    ```bash
    docker-compose up --build
    ```
 
-4. Acesse os serviços:
+4. **Acesse os serviços:**
    - Gateway: [http://localhost:3000](http://localhost:3000)
    - RabbitMQ: [http://localhost:15672](http://localhost:15672) (usuário/pwd: guest)
 
