@@ -25,6 +25,7 @@ jobs:
 
       - name: 🐳 Build & Push de imagens
         run: |
+          echo "EMAIL_PORT=${{ vars.EMAIL_PORT }}" >> .env
           services=(auth-service gateway-service upload-service processing-service zipping-service notification-service)
           for service in "${services[@]}"; do
             docker build -t ${{ secrets.DOCKER_USERNAME }}/$service:latest ./services/$service
