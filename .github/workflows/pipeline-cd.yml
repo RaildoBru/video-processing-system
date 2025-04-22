@@ -31,3 +31,4 @@ jobs:
             docker push ${{ secrets.DOCKER_USERNAME }}/$service:latest
           done
           echo "EMAIL_PORT=${{ vars.EMAIL_PORT }}" >> .env
+          echo 'teste'
